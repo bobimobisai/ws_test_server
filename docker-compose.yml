@@ -5,5 +5,5 @@ services:
     build: .
     restart: on-failure
     ports:
-      - "8765:8765"
+      - "8765:8080"
     command: python wserver.py
