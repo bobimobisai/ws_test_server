@@ -1,26 +1,34 @@
 import asyncio
+import random
 import websockets
 
-cl_list = []
+clients = []
 
 
-async def send_message(message: str):
-    for client in cl_list:
-        await client.send(str(message))
-
-
-async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
-    cl_list.append(cl_soket)
+async def send_data():
     while True:
-        new_message = await cl_soket.recv()
-        await send_message(message=new_message)
+        # Генерируем случайные цифры для кортежа
+        data = (random.randint(1, 100), random.randint(1, 100), random.randint(1, 100))
+        # Преобразуем кортеж в строку для отправки
+        message = ",".join(map(str, data))
+        # Отправляем сообщение всем клиентам
+        await asyncio.wait([client.send(message) for client in clients])
+        # Ждем некоторое время перед отправкой следующего сообщения
+        # await asyncio.sleep(1)
+
+
+async def new_client(websocket, path):
+    clients.append(websocket)
+    async for message in websocket:
+         # При получении сообщения от клиента можно выполнить какие-то действия
+        pass
 
 
 async def start_server():
-    await websockets.serve(new_client, "0.0.0.0", 8080)
+    # Запускаем сервер на порту 8080
+    async with websockets.serve(new_client, "0.0.0.0", 8080):
+        # Запускаем бесконечный цикл отправки данных
+        await asyncio.gather(send_data())
 
 
-if __name__ == "__main__":
-    event_loop = asyncio.get_event_loop()
-    event_loop.run_until_complete(start_server())
-    event_loop.run_forever()
+asyncio.run(start_server())
