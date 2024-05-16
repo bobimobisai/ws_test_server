@@ -19,7 +19,7 @@ async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
 
 
 async def start_server():
-    await websockets.serve(new_client, "0.0.0.0", 8080)
+    await websockets.serve(new_client, "0.0.0.0", 8080, ping_interval=None)
     
 
 def gen():
