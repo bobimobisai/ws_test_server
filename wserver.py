@@ -13,13 +13,14 @@ async def send_message(message: str):
 async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
     cl_list.append(cl_soket)
     while True:
+        await generate_data()
         new_message = await cl_soket.recv()
         await send_message(message=new_message)
 
 
 async def start_server():
     await websockets.serve(new_client, "0.0.0.0", 8080)
-    await generate_data()
+    
 
 def gen():
     yield random.randint(1, 10000)

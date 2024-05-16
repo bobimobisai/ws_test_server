@@ -3,7 +3,7 @@ import websockets
 
 
 async def receive_data():
-    async with websockets.connect("ws://37.230.192.239:8080") as websocket:
+    async with websockets.connect("ws://localhost:8080") as websocket:
         async for message in websocket:
             print("Received:", message)
 
