@@ -1,0 +1,5 @@
+opencv-python-headless==4.9.0.80
+opencv-contrib-python-headless==4.9.0.80
+webcolors==1.13
+websocket-client==1.8.0
+websockets==12.0
