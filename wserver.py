@@ -2,11 +2,14 @@ import asyncio
 import logging
 import websockets
 
+logging.basicConfig(level=logging.DEBUG)
+
 cl_list = []
 
 
 async def send_message(message: str):
     for client in cl_list:
+        logging.info(message)
         await client.send(str(message))
 
 
