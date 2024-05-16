@@ -6,16 +6,19 @@ cl_list = []
 
 
 async def send_message(message: str):
-    for client in cl_list:
-        await client.send(str(message))
+    if cl_list:
+        await asyncio.wait([client.send(str(message)) for client in cl_list])
 
 
 async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
     cl_list.append(cl_soket)
-    async for new_message in cl_soket:
-        for client in cl_list:
-            if client != cl_soket:
-                await client.send(new_message)
+    try:
+        async for new_message in cl_soket:
+            await send_message(new_message)
+    except websockets.exceptions.ConnectionClosedError:
+        pass
+    finally:
+        cl_list.remove(cl_soket)
 
 
 async def start_server():
