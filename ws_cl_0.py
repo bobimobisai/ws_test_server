@@ -1,13 +1,16 @@
 import asyncio
 import websockets
-import random
 
 
-async def connect_to_server():
+async def receive_data():
     async with websockets.connect("ws://37.230.192.239:8080") as websocket:
-        while True:
-            response = await websocket.recv()
-            print(f"Received: {response}")
+        async for message in websocket:
+            print("Received:", message)
 
 
-asyncio.run(connect_to_server())
+async def main():
+    await receive_data()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

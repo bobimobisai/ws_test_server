@@ -19,13 +19,15 @@ async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
 
 async def start_server():
     await websockets.serve(new_client, "0.0.0.0", 8080)
+    await generate_data()
 
+def gen():
+    yield random.randint(1, 10000)
 
 async def generate_data():
     while True:
-        data = (random.randint(1, 100), random.randint(1, 100), random.randint(1, 100))
-        message = ",".join(map(str, data))
-        await send_message(message)
+        message = next(gen())
+        await send_message(str(message))
 
 
 if __name__ == "__main__":
