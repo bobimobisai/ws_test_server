@@ -12,8 +12,8 @@ async def connect_to_server():
         while True:
             g = next(gen())
             await websocket.send(str(g))
-            response = await websocket.recv()
-            print(f"Received: {response}")
+            # response = await websocket.recv()
+            # print(f"Received: {response}")
 
 
 asyncio.run(connect_to_server())

@@ -7,7 +7,7 @@ cl_list = []
 
 async def send_message(message: str):
     if cl_list:
-        await asyncio.wait([client.send(str(message)) for client in cl_list])
+        await asyncio.wait([await client.send(str(message)) for client in cl_list])
 
 
 async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
