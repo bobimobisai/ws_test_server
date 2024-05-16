@@ -10,10 +10,8 @@ def gen():
 async def connect_to_server():
     async with websockets.connect("ws://37.230.192.239:8080", ping_interval=None) as websocket:
         while True:
-            g = next(gen())
-            await websocket.send(str(g))
-            response = await websocket.recv()
-            print(f"Received: {response}")
+            for i in gen():
+                await websocket.send(str(i))
 
 
 asyncio.run(connect_to_server())
