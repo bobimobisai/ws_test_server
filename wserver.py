@@ -4,9 +4,11 @@ import websockets
 
 cl_list = []
 
+
 async def send_message(message: str):
     for client in cl_list:
         await client.send(str(message))
+
 
 async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
     cl_list.append(cl_soket)
@@ -14,8 +16,10 @@ async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
         new_message = await cl_soket.recv()
         await send_message(message=new_message)
 
+
 async def start_server():
-    await websockets.serve(new_client, "localhost", 8080)
+    await websockets.serve(new_client, "0.0.0.0", 8080)
+
 
 if __name__ == "__main__":
     event_loop = asyncio.get_event_loop()
