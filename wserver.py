@@ -19,10 +19,13 @@ async def new_client(cl_soket: websockets.WebSocketClientProtocol, path: str):
 
 
 async def start_server():
-    await websockets.serve(new_client, "0.0.0.0", 8080, ping_interval=None)
+    async with websockets.serve(new_client, "0.0.0.0", 8080, ping_interval=None):
+        await asyncio.Future()
+
+
+async def main():
+    await asyncio.gather(start_server())
 
 
 if __name__ == "__main__":
-    event_loop = asyncio.get_event_loop()
-    event_loop.run_until_complete(start_server())
-    event_loop.run_forever()
+    asyncio.run(main())

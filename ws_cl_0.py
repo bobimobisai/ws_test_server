@@ -4,8 +4,11 @@ import websockets
 
 async def receive_data():
     async with websockets.connect("ws://37.230.192.239:8080", ping_interval=None) as websocket:
-        async for message in websocket:
-            print("Received:", message)
+        while True:
+            msg = await websocket.recv()
+            print(msg)
+        # async for message in websocket:
+        #     print("Received:", message)
 
 
 async def main():

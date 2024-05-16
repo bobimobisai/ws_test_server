@@ -8,7 +8,7 @@ def gen():
 
 
 async def connect_to_server():
-    async with websockets.connect("ws://37.230.192.239:8080") as websocket:
+    async with websockets.connect("ws://37.230.192.239:8080", ping_interval=None) as websocket:
         while True:
             g = next(gen())
             await websocket.send(str(g))
